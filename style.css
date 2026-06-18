@@ -334,6 +334,35 @@ td:nth-child(2) { color: var(--green-dark); font-weight: 800; }
 .contact-cards { display: grid; gap: 12px; margin-top: 28px; }
 .contact-cards a { display: grid; padding: 18px; border: 1px solid rgba(255,255,255,.2); border-radius: 8px; background: rgba(255,255,255,.08); }
 .contact-cards span { color: rgba(255,255,255,.72); }
+.line-guide {
+  display: grid;
+  gap: 14px;
+  margin-top: 18px;
+  padding: 12px;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 8px;
+  background: rgba(255,255,255,.09);
+}
+.line-guide img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1200 / 760;
+  object-fit: cover;
+  border-radius: 6px;
+}
+.line-guide strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 18px;
+  line-height: 1.45;
+}
+.line-guide small {
+  display: block;
+  color: rgba(255,255,255,.76);
+  font-size: 13px;
+  line-height: 1.75;
+}
 .form {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
