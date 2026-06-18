@@ -9,13 +9,13 @@ const sample = [
   "6. 写真があれば数枚　6枚"
 ].join("\n");
 
-console.log(webhook._test.fallbackReply(sample));
+console.log(webhook._test.templateReply(sample));
 
 console.log("\n--- contact only ---\n");
-console.log(webhook._test.fallbackReply("田中\n電話08014558894"));
+console.log(webhook._test.templateReply("田中\n電話08014558894"));
 
 console.log("\n--- full after contact ---\n");
-console.log(webhook._test.fallbackReply([
+console.log(webhook._test.templateReply([
   "遺品整理の見積もりお願いします。",
   "奈良県です。",
   "4LDKで物量は多いです。",

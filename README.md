@@ -29,18 +29,16 @@ Search Consoleを使う場合は、`meta name="google-site-verification"` の `c
 - Google広告IDとコンバージョンラベルを入れると、電話・LINE・無料見積もりボタンをコンバージョンとして送信します。
 - `utm_source`、`utm_medium`、`utm_campaign`、`utm_term`、`gclid` はhidden項目へ保存されます。
 
-## 公式LINE AI返信
+## 公式LINE テンプレ自動返信
 
 `api/line-webhook.js` にLINE Messaging API用のWebhookを用意しています。
-GitHub Pagesではサーバー機能が動かないため、AI返信はVercelなどに公開して使います。
+GitHub Pagesではサーバー機能が動かないため、テンプレ自動返信はVercelなどに公開して使います。
 
 必要な環境変数:
 
 ```env
 LINE_CHANNEL_SECRET=
 LINE_CHANNEL_ACCESS_TOKEN=
-OPENAI_API_KEY=
-OPENAI_MODEL=gpt-4.1-mini
 ```
 
 Webhook URL:

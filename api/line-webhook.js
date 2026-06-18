@@ -1,35 +1,6 @@
 const crypto = require("crypto");
 
 const LINE_REPLY_ENDPOINT = "https://api.line.me/v2/bot/message/reply";
-const OPENAI_RESPONSES_ENDPOINT = "https://api.openai.com/v1/responses";
-
-const BUSINESS_CONTEXT = `
-あなたは「心まごころ遺品整理」の公式LINE一次対応AIです。
-
-基本情報:
-- 公式LINE ID: @357phpan
-- 対応エリア: 大阪、兵庫、奈良、京都
-- 営業時間: 9:00〜18:00
-- 電話番号: 0745-51-1665
-- 主なサービス: 遺品整理 / 生前整理 / 供養 / 買取
-
-役割:
-- 最初のあいさつ
-- LPから届いた名前、電話番号、エリア、相談内容、詳細の確認
-- 不足情報の聞き返し
-- 写真送付の案内
-- 担当者が返信する旨の案内
-- クレームやトラブル時の一次受け
-
-守ること:
-- 丁寧で落ち着いた日本語にする。
-- 長すぎず、LINEで読みやすい文量にする。
-- 金額確定、日程確定、作業可否の断定はしない。
-- クレーム、トラブル、急ぎ、特殊清掃、孤独死、強い臭気、害虫、体液、血液、法的・相続問題は担当者に引き継ぐ。
-- ユーザーが十分な情報を送っている場合は「担当者が確認して返信します」と案内する。
-- 間取り、物量、希望時期、立ち会い可否、写真が不足している場合は、分かる範囲で追加依頼する。
-- 営業時間外でも受付はできるが、返信は営業時間内になる場合があると案内する。
-`;
 
 function readRawBody(req) {
   return new Promise((resolve, reject) => {
@@ -90,7 +61,7 @@ function isSimpleTest(text) {
   return /^(テスト|test|確認|こんにちは|はじめまして)$/i.test(text.trim());
 }
 
-function fallbackReply(userText) {
+function templateReply(userText) {
   const enoughLeadInfo = hasEnoughLeadInfo(userText);
   const contactInfo = hasContactInfo(userText);
 
@@ -172,42 +143,6 @@ function fallbackReply(userText) {
   ].join("\n");
 }
 
-async function createAiReply(userText) {
-  const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey) return fallbackReply(userText);
-
-  const response = await fetch(OPENAI_RESPONSES_ENDPOINT, {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${apiKey}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      model: process.env.OPENAI_MODEL || "gpt-4.1-mini",
-      input: [
-        {
-          role: "system",
-          content: BUSINESS_CONTEXT
-        },
-        {
-          role: "user",
-          content: `お客様からのLINEメッセージ:\n${userText}\n\nこの内容に返信してください。`
-        }
-      ],
-      max_output_tokens: 420
-    })
-  });
-
-  if (!response.ok) {
-    console.error("OpenAI API error", response.status, await response.text());
-    return fallbackReply(userText);
-  }
-
-  const data = await response.json();
-  const text = data.output_text || "";
-  return text.trim() || fallbackReply(userText);
-}
-
 async function replyToLine(replyToken, text) {
   const token = process.env.LINE_CHANNEL_ACCESS_TOKEN;
   if (!token) throw new Error("LINE_CHANNEL_ACCESS_TOKEN is missing");
@@ -275,7 +210,7 @@ module.exports = async function handler(req, res) {
       }
 
       const userText = event.message.text || "";
-      const reply = await createAiReply(userText);
+      const reply = templateReply(userText);
       await replyToLine(event.replyToken, reply);
     }));
 
@@ -287,7 +222,7 @@ module.exports = async function handler(req, res) {
 };
 
 module.exports._test = {
-  fallbackReply,
+  templateReply,
   hasEnoughLeadInfo,
   isComplaintOrEscalation
 };

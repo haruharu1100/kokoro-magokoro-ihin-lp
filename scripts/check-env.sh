@@ -29,7 +29,6 @@ check_var() {
 
 check_var "LINE_CHANNEL_SECRET"
 check_var "LINE_CHANNEL_ACCESS_TOKEN"
-check_var "OPENAI_API_KEY"
 
 if [[ $missing -ne 0 ]]; then
   echo

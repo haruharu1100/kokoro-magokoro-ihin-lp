@@ -111,8 +111,6 @@ LPからLINEへ送る本文は下記形式。
 ```text
 LINE_CHANNEL_SECRET=
 LINE_CHANNEL_ACCESS_TOKEN=
-OPENAI_API_KEY=
-OPENAI_MODEL=gpt-4.1-mini
 ```
 
 ## LINE公式アカウント側で必要な設定
