@@ -1,3 +1,7 @@
+(() => {
+if (window.__kokoroLpScriptLoaded) return;
+window.__kokoroLpScriptLoaded = true;
+
 const config = window.LP_CONFIG || {};
 const roomSelect = document.querySelector("#roomSelect");
 const volumeSelect = document.querySelector("#volumeSelect");
@@ -153,3 +157,4 @@ volumeSelect?.addEventListener("change", updateEstimate);
 applyRuntimeConfig();
 loadTracking();
 captureCampaignParams();
+})();
