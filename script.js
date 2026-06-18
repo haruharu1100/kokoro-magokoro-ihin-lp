@@ -81,6 +81,14 @@ function trackAdsConversion(eventName) {
   });
 }
 
+function normalizedPhoneNumber() {
+  const phone = hasRealValue(config.phoneNumber) ? config.phoneNumber : "0745-51-1665";
+  return {
+    display: phone,
+    href: `tel:${phone.replace(/[^\d+]/g, "")}`
+  };
+}
+
 function captureCampaignParams() {
   const params = new URLSearchParams(window.location.search);
   const keys = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "gclid"];
@@ -94,8 +102,24 @@ function captureCampaignParams() {
   if (pageUrl) pageUrl.value = window.location.href;
 }
 
+document.querySelectorAll(".js-phone-link").forEach((link) => {
+  link.addEventListener("click", (event) => {
+    event.preventDefault();
+    const phone = normalizedPhoneNumber();
+    const confirmed = window.confirm(`${phone.display}に電話しますか？`);
+
+    if (!confirmed) return;
+
+    const label = link.dataset.track || "phone_confirmed";
+    trackEvent("phone_confirmed", { event_category: "lead", event_label: label });
+    trackAdsConversion(label);
+    window.location.href = phone.href;
+  });
+});
+
 document.querySelectorAll("[data-track]").forEach((element) => {
   element.addEventListener("click", () => {
+    if (element.classList.contains("js-phone-link")) return;
     const label = element.dataset.track;
     trackEvent("lp_click", { event_category: "engagement", event_label: label });
     if (label && (label.startsWith("phone") || label.startsWith("line"))) {
