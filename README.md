@@ -7,9 +7,7 @@ GitHub Pagesで無料公開できる静的LPです。
 `index.html` の `window.LP_CONFIG` を編集してください。
 
 - `phoneNumber`: 実際の電話番号
-- `mailAddress`: 問い合わせ用メール
 - `lineUrl`: LINE公式アカウントのURL
-- `formEndpoint`: Formspreeなどのフォーム送信先URL
 - `ga4MeasurementId`: GA4の測定ID
 - `googleAdsId`: Google広告タグID
 - `googleAdsConversionLabel`: Google広告コンバージョンラベル
@@ -27,6 +25,6 @@ Search Consoleを使う場合は、`meta name="google-site-verification"` の `c
 
 ## 広告運用メモ
 
-- 電話クリック、LINEクリック、フォーム送信は `gtag` イベントを送信します。
-- Google広告IDとコンバージョンラベルを入れると、電話・LINE・フォームをコンバージョンとして送信します。
-- `utm_source`、`utm_medium`、`utm_campaign`、`utm_term`、`gclid` はフォームのhidden項目へ保存されます。
+- 電話クリック、LINEクリック、無料見積もりボタンは `gtag` イベントを送信します。
+- Google広告IDとコンバージョンラベルを入れると、電話・LINE・無料見積もりボタンをコンバージョンとして送信します。
+- `utm_source`、`utm_medium`、`utm_campaign`、`utm_term`、`gclid` はhidden項目へ保存されます。

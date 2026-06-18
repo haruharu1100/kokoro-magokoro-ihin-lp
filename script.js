@@ -9,10 +9,8 @@ const placeholderValues = new Set([
   "G-XXXXXXXXXX",
   "AW-XXXXXXXXXX",
   "YOUR_CONVERSION_LABEL",
-  "https://formspree.io/f/YOUR_FORM_ID",
   "https://line.me/R/ti/p/@YOUR_LINE_ID",
-  "0120-000-000",
-  "info@example.com"
+  "0120-000-000"
 ]);
 
 function hasRealValue(value) {
@@ -42,22 +40,14 @@ function applyRuntimeConfig() {
     });
   }
 
-  if (hasRealValue(config.mailAddress)) {
-    document.querySelectorAll(".js-mail-link").forEach((link) => {
-      link.href = `mailto:${config.mailAddress}`;
-      const span = link.querySelector("span");
-      if (span) span.textContent = config.mailAddress;
-    });
-  }
-
   if (hasRealValue(config.lineUrl)) {
     document.querySelectorAll(".js-line-link").forEach((link) => {
       link.href = config.lineUrl;
     });
   }
 
-  if (form && hasRealValue(config.formEndpoint)) {
-    form.action = config.formEndpoint;
+  if (form && hasRealValue(config.lineUrl)) {
+    form.action = config.lineUrl;
   }
 }
 
@@ -115,15 +105,18 @@ document.querySelectorAll("[data-track]").forEach((element) => {
 });
 
 form?.addEventListener("submit", (event) => {
+  event.preventDefault();
   trackEvent("generate_lead", { event_category: "lead", event_label: "form_submit" });
   trackAdsConversion("form_submit");
 
-  if (!hasRealValue(form.action) || form.action.includes("YOUR_FORM_ID")) {
-    event.preventDefault();
-    if (formNote) {
-      formNote.textContent = "フォーム送信先が未設定です。Formspreeなどの送信先URLを入れると、そのまま受信できます。";
-      formNote.style.color = "#c94f45";
-    }
+  if (hasRealValue(config.lineUrl)) {
+    window.location.href = config.lineUrl;
+    return;
+  }
+
+  if (formNote) {
+    formNote.textContent = "公式LINEのURLが未設定です。LINE公式アカウントのURLを設定してください。";
+    formNote.style.color = "#c94f45";
   }
 });
 
