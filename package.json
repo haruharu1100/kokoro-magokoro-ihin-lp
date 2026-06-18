@@ -1,0 +1,12 @@
+{
+  "name": "kokoro-magokoro-ihin-lp",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vercel dev",
+    "check": "node --check api/line-webhook.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

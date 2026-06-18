@@ -112,12 +112,27 @@ LPからLINEへ送る本文は下記形式。
 LINE_CHANNEL_SECRET=
 LINE_CHANNEL_ACCESS_TOKEN=
 OPENAI_API_KEY=
+OPENAI_MODEL=gpt-4.1-mini
 ```
 
 ## LINE公式アカウント側で必要な設定
 
 - Messaging APIを有効にする。
-- Webhook URLを設定する。
+- Webhook URLを設定する。Vercel公開後は `https://公開URL/api/line-webhook` を入れる。
 - Use webhookをONにする。
 - AI返信と二重返信になる場合、通常の自動応答はOFFにする。
 - あいさつメッセージだけ残すか、AI側に統一するかを決める。
+
+## ローカル確認
+
+```bash
+npm run check
+```
+
+## Vercel公開後の確認
+
+ブラウザで下記を開いて `ok: true` が出れば、Webhookサーバーは起動しています。
+
+```text
+https://公開URL/api/line-webhook
+```
