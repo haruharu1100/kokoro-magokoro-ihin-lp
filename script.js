@@ -119,7 +119,13 @@ function lineMessageUrl() {
   const message = buildLineMessage();
   const hasInput = ["name", "tel", "area", "message"].some((name) => fieldValue(name));
   if (!hasInput) return config.lineUrl;
-  return `https://line.me/R/oaMessage/${lineOfficialId}/?${encodeURIComponent(message)}`;
+  return `https://line.me/R/oaMessage/${encodeURIComponent(lineOfficialId)}/?${encodeURIComponent(message)}`;
+}
+
+function updateLineSubmitHref() {
+  document.querySelectorAll('[data-track="line_form_submit"]').forEach((link) => {
+    link.href = lineMessageUrl();
+  });
 }
 
 function captureCampaignParams() {
@@ -151,7 +157,7 @@ document.querySelectorAll(".js-phone-link").forEach((link) => {
 });
 
 document.querySelectorAll("[data-track]").forEach((element) => {
-  element.addEventListener("click", () => {
+  element.addEventListener("click", (event) => {
     if (element.classList.contains("js-phone-link")) return;
     const label = element.dataset.track;
     trackEvent("lp_click", { event_category: "engagement", event_label: label });
@@ -162,7 +168,8 @@ document.querySelectorAll("[data-track]").forEach((element) => {
       trackAdsConversion(label);
     }
     if (label === "line_form_submit") {
-      element.href = lineMessageUrl();
+      event.preventDefault();
+      window.location.href = lineMessageUrl();
     }
   });
 });
@@ -185,8 +192,13 @@ form?.addEventListener("submit", (event) => {
 
 roomSelect?.addEventListener("change", updateEstimate);
 volumeSelect?.addEventListener("change", updateEstimate);
+["name", "tel", "area", "type", "message"].forEach((name) => {
+  form?.elements?.[name]?.addEventListener("input", updateLineSubmitHref);
+  form?.elements?.[name]?.addEventListener("change", updateLineSubmitHref);
+});
 
 applyRuntimeConfig();
 loadTracking();
 captureCampaignParams();
+updateLineSubmitHref();
 })();
