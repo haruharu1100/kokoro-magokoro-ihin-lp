@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://YOUR_GITHUB_USERNAME.github.io/YOUR_REPOSITORY_NAME/sitemap.xml
+Sitemap: https://haruharu1100.github.io/kokoro-magokoro-ihin-lp/sitemap.xml
