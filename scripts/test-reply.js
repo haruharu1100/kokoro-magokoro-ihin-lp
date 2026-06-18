@@ -25,6 +25,3 @@ console.log(webhook._test.templateReply([
   "名前田中",
   "電話08014558848"
 ].join("\n")));
-
-console.log("\n--- image ---\n");
-console.log(webhook._test.imageReply());

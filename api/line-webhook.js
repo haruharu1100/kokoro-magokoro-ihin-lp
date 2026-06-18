@@ -133,13 +133,6 @@ function templateReply(userText) {
   ].join("\n");
 }
 
-function imageReply() {
-  return [
-    "写真ありがとうございます。",
-    "担当者が内容とあわせて確認いたします。"
-  ].join("\n");
-}
-
 async function replyToLine(replyToken, text) {
   const token = process.env.LINE_CHANNEL_ACCESS_TOKEN;
   if (!token) throw new Error("LINE_CHANNEL_ACCESS_TOKEN is missing");
@@ -201,16 +194,12 @@ module.exports = async function handler(req, res) {
 
   try {
     const events = Array.isArray(payload.events) ? payload.events : [];
-    let repliedToImage = false;
     await Promise.all(events.map(async (event) => {
       if (event.type !== "message" || !event.replyToken) {
         return;
       }
 
       if (event.message?.type === "image") {
-        if (repliedToImage) return;
-        repliedToImage = true;
-        await replyToLine(event.replyToken, imageReply());
         return;
       }
 
@@ -232,7 +221,6 @@ module.exports = async function handler(req, res) {
 
 module.exports._test = {
   templateReply,
-  imageReply,
   hasEnoughLeadInfo,
   isComplaintOrEscalation
 };
