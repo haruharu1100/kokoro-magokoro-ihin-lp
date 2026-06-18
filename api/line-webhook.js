@@ -73,16 +73,37 @@ function hasEnoughLeadInfo(text) {
 }
 
 function hasContactInfo(text) {
-  const hasName = /お名前|名前|氏名|田中|山田|様/.test(text);
+  const hasName = /お名前|名前|氏名|[一-龠ぁ-んァ-ンー]{2,}\s*(です|と申します|といいます|電話|TEL|tel)|様/.test(text);
   const hasPhone = /電話番号|電話|TEL|tel|携帯|090|080|070|0\d{1,4}[-\s]?\d{1,4}[-\s]?\d{3,4}/.test(text);
   return hasName || hasPhone;
+}
+
+function hasPhoneNumber(text) {
+  return /電話番号|電話|TEL|tel|携帯|090|080|070|0\d{1,4}[-\s]?\d{1,4}[-\s]?\d{3,4}/.test(text);
 }
 
 function isComplaintOrEscalation(text) {
   return /クレーム|苦情|怒|返金|キャンセル|トラブル|ひどい|最悪|連絡がない|孤独死|特殊清掃|臭|害虫|血液|体液|相続|法律/.test(text);
 }
 
+function isSimpleTest(text) {
+  return /^(テスト|test|確認|こんにちは|はじめまして)$/i.test(text.trim());
+}
+
 function fallbackReply(userText) {
+  const enoughLeadInfo = hasEnoughLeadInfo(userText);
+  const contactInfo = hasContactInfo(userText);
+
+  if (isSimpleTest(userText)) {
+    return [
+      "テストメッセージを受信しました。",
+      "心まごころ遺品整理です。",
+      "",
+      "遺品整理・生前整理・供養・買取のご相談は、このまま内容をお送りください。",
+      "担当者確認が必要な内容は、確認後に返信いたします。"
+    ].join("\n");
+  }
+
   if (isComplaintOrEscalation(userText)) {
     return [
       "ご不安な思いをさせてしまい申し訳ございません。",
@@ -92,25 +113,36 @@ function fallbackReply(userText) {
     ].join("\n");
   }
 
-  if (hasEnoughLeadInfo(userText)) {
+  if (enoughLeadInfo && contactInfo) {
     return [
       "ありがとうございます。",
-      "ご入力内容を確認しました。",
+      "ご相談内容とご連絡先を確認しました。",
       "",
       "担当者が内容を確認して返信いたしますので、少々お待ちください。",
-      "お部屋全体や荷物量が分かる写真があれば、続けて送っていただくと概算見積もりがスムーズです。",
-      "",
-      "お名前とお電話番号がまだの場合は、あわせてお送りください。"
+      "追加で写真がある場合は、このまま送っていただけます。"
     ].join("\n");
   }
 
-  if (hasContactInfo(userText)) {
+  if (enoughLeadInfo) {
     return [
       "ありがとうございます。",
-      "お名前・お電話番号を確認しました。",
+      "ご相談内容を確認しました。",
       "",
-      "概算見積もりのため、分かる範囲で下記も教えてください。",
+      "概算確認に必要な情報はかなり揃っています。",
+      "お部屋全体や荷物量が分かる写真があれば、続けて送っていただくと概算見積もりがスムーズです。",
       "",
+      "担当者からの折り返しに必要なため、お名前とお電話番号もお送りください。"
+    ].join("\n");
+  }
+
+  if (contactInfo) {
+    return [
+      "ありがとうございます。",
+      hasPhoneNumber(userText) ? "ご連絡先を確認しました。" : "お名前を確認しました。",
+      "",
+      "先に間取り・物量・希望時期などをお送りいただいている場合は、担当者が内容を確認して返信いたします。",
+      "",
+      "まだの場合は、概算見積もりのため分かる範囲で下記をお送りください。",
       "1. 作業場所の市区町村",
       "2. 間取り",
       "3. 物量",
