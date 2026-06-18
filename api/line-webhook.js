@@ -52,6 +52,16 @@ function verifyLineSignature(rawBody, signature, channelSecret) {
 }
 
 function hasEnoughLeadInfo(text) {
+  const estimateDetails = [
+    /作業場所|市区町村|エリア|住所|市|区|町|村|大阪|兵庫|奈良|京都/.test(text),
+    /間取り|1K|1DK|1LDK|2DK|2LDK|3DK|3LDK|4DK|4LDK|5LDK|ldk|LDK|dk|DK/.test(text),
+    /物量|多い|少ない|普通|荷物|家具|家電/.test(text),
+    /希望時期|希望日|今日|明日|今月|来月|\d{1,2}\/\d{1,2}|\d{1,2}月/.test(text),
+    /立ち会い|立会|あり|なし|可能|不可/.test(text),
+    /写真|枚|画像/.test(text)
+  ];
+  if (estimateDetails.filter(Boolean).length >= 3) return true;
+
   const checks = [
     /お名前|名前|氏名/.test(text),
     /電話番号|TEL|tel|携帯|090|080|070/.test(text),
@@ -82,7 +92,9 @@ function fallbackReply(userText) {
       "ご入力内容を確認しました。",
       "",
       "担当者が内容を確認して返信いたしますので、少々お待ちください。",
-      "お部屋全体や荷物量が分かる写真があれば、続けて送っていただくと概算見積もりがスムーズです。"
+      "お部屋全体や荷物量が分かる写真があれば、続けて送っていただくと概算見積もりがスムーズです。",
+      "",
+      "お名前とお電話番号がまだの場合は、あわせてお送りください。"
     ].join("\n");
   }
 
@@ -216,4 +228,10 @@ module.exports = async function handler(req, res) {
     console.error(error);
     res.status(500).json({ ok: false, error: "Webhook handling failed" });
   }
+};
+
+module.exports._test = {
+  fallbackReply,
+  hasEnoughLeadInfo,
+  isComplaintOrEscalation
 };
