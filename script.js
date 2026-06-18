@@ -122,6 +122,9 @@ document.querySelectorAll("[data-track]").forEach((element) => {
     if (element.classList.contains("js-phone-link")) return;
     const label = element.dataset.track;
     trackEvent("lp_click", { event_category: "engagement", event_label: label });
+    if (label === "line_form_submit" || label === "line_contact" || label === "line_hero" || label === "line_sticky") {
+      trackEvent(label, { event_category: "lead", event_label: label });
+    }
     if (label && (label.startsWith("phone") || label.startsWith("line"))) {
       trackAdsConversion(label);
     }
