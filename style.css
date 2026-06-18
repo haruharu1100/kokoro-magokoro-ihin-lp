@@ -235,6 +235,60 @@ p { margin: 0; }
   border-radius: 50%;
 }
 
+.resale {
+  padding-top: 36px;
+}
+.resale-layout {
+  display: grid;
+  grid-template-columns: 1.05fr .95fr;
+  gap: 22px;
+}
+.resale-main,
+.cost-card {
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+.resale-main {
+  background:
+    linear-gradient(135deg, rgba(31,111,91,.08), rgba(199,146,45,.12)),
+    #fff;
+}
+.resale-main h3,
+.cost-card h3 {
+  margin-top: 0;
+  color: var(--green-dark);
+  font-size: 24px;
+}
+.resale-main p,
+.cost-card li {
+  color: var(--muted);
+}
+.resale-main p + p {
+  margin-top: 14px;
+  color: var(--ink);
+  font-weight: 800;
+}
+.formula {
+  margin: 12px 0 18px;
+  padding: 18px;
+  color: var(--green-dark);
+  background: var(--soft);
+  border-left: 5px solid var(--gold);
+  border-radius: 6px;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1.55;
+}
+.cost-card ul {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding-left: 20px;
+}
+
 .price { background: linear-gradient(180deg, transparent 0, transparent 8%, var(--soft) 8%, var(--soft) 100%); width: 100%; max-width: none; padding-inline: max(16px, calc((100% - 1120px) / 2)); }
 .price-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .price-grid article { position: relative; }
@@ -439,6 +493,7 @@ td:nth-child(2) { color: var(--green-dark); font-weight: 800; }
   .service-grid,
   .flow-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .reason-layout,
+  .resale-layout,
   .calculator,
   .contact { grid-template-columns: 1fr; }
   .reason-photo { min-height: 340px; }
