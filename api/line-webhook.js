@@ -72,6 +72,12 @@ function hasEnoughLeadInfo(text) {
   return checks.filter(Boolean).length >= 4;
 }
 
+function hasContactInfo(text) {
+  const hasName = /お名前|名前|氏名|田中|山田|様/.test(text);
+  const hasPhone = /電話番号|電話|TEL|tel|携帯|090|080|070|0\d{1,4}[-\s]?\d{1,4}[-\s]?\d{3,4}/.test(text);
+  return hasName || hasPhone;
+}
+
 function isComplaintOrEscalation(text) {
   return /クレーム|苦情|怒|返金|キャンセル|トラブル|ひどい|最悪|連絡がない|孤独死|特殊清掃|臭|害虫|血液|体液|相続|法律/.test(text);
 }
@@ -95,6 +101,24 @@ function fallbackReply(userText) {
       "お部屋全体や荷物量が分かる写真があれば、続けて送っていただくと概算見積もりがスムーズです。",
       "",
       "お名前とお電話番号がまだの場合は、あわせてお送りください。"
+    ].join("\n");
+  }
+
+  if (hasContactInfo(userText)) {
+    return [
+      "ありがとうございます。",
+      "お名前・お電話番号を確認しました。",
+      "",
+      "概算見積もりのため、分かる範囲で下記も教えてください。",
+      "",
+      "1. 作業場所の市区町村",
+      "2. 間取り",
+      "3. 物量",
+      "4. 希望時期",
+      "5. 立ち会いの可否",
+      "6. 写真があれば数枚",
+      "",
+      "分かる範囲だけで大丈夫です。"
     ].join("\n");
   }
 

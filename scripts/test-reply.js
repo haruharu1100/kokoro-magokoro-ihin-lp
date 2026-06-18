@@ -10,3 +10,6 @@ const sample = [
 ].join("\n");
 
 console.log(webhook._test.fallbackReply(sample));
+
+console.log("\n--- contact only ---\n");
+console.log(webhook._test.fallbackReply("田中\n電話08014558894"));
