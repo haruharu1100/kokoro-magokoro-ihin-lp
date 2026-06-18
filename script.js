@@ -3,6 +3,7 @@ if (window.__kokoroLpScriptLoaded) return;
 window.__kokoroLpScriptLoaded = true;
 
 const config = window.LP_CONFIG || {};
+const lineOfficialId = "@357phpan";
 const roomSelect = document.querySelector("#roomSelect");
 const volumeSelect = document.querySelector("#volumeSelect");
 const estimate = document.querySelector("#estimate");
@@ -39,7 +40,7 @@ function applyRuntimeConfig() {
       if (link.classList.contains("tel")) link.textContent = config.phoneNumber;
       const span = link.querySelector("span");
       if (span && span.textContent.includes("0120-000-000")) {
-        span.textContent = `${config.phoneNumber} / 8:00〜22:00`;
+        span.textContent = `${config.phoneNumber} / 9:00〜18:00`;
       }
     });
   }
@@ -93,6 +94,40 @@ function normalizedPhoneNumber() {
   };
 }
 
+function fieldValue(name) {
+  const field = form?.elements?.[name];
+  return field ? field.value.trim() : "";
+}
+
+function buildLineMessage() {
+  if (!form) return "";
+  const lines = [
+    "無料見積もりをお願いします。",
+    "",
+    `お名前: ${fieldValue("name") || "未入力"}`,
+    `電話番号: ${fieldValue("tel") || "未入力"}`,
+    `エリア: ${fieldValue("area") || "未入力"}`,
+    `相談内容: ${fieldValue("type") || "未入力"}`,
+    `詳細: ${fieldValue("message") || "未入力"}`,
+    "",
+    "間取り、物量、希望日、立ち会い可否が分かれば追って送ります。"
+  ];
+  return lines.join("\n");
+}
+
+function lineMessageUrl() {
+  const message = buildLineMessage();
+  const hasInput = ["name", "tel", "area", "message"].some((name) => fieldValue(name));
+  if (!hasInput) return config.lineUrl;
+  return `https://line.me/R/oaMessage/${encodeURIComponent(lineOfficialId)}/?${encodeURIComponent(message)}`;
+}
+
+function updateLineSubmitHref() {
+  document.querySelectorAll('[data-track="line_form_submit"]').forEach((link) => {
+    link.href = lineMessageUrl();
+  });
+}
+
 function captureCampaignParams() {
   const params = new URLSearchParams(window.location.search);
   const keys = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "gclid"];
@@ -122,7 +157,7 @@ document.querySelectorAll(".js-phone-link").forEach((link) => {
 });
 
 document.querySelectorAll("[data-track]").forEach((element) => {
-  element.addEventListener("click", () => {
+  element.addEventListener("click", (event) => {
     if (element.classList.contains("js-phone-link")) return;
     const label = element.dataset.track;
     trackEvent("lp_click", { event_category: "engagement", event_label: label });
@@ -131,6 +166,10 @@ document.querySelectorAll("[data-track]").forEach((element) => {
     }
     if (label && (label.startsWith("phone") || label.startsWith("line"))) {
       trackAdsConversion(label);
+    }
+    if (label === "line_form_submit") {
+      event.preventDefault();
+      window.location.href = lineMessageUrl();
     }
   });
 });
@@ -141,7 +180,7 @@ form?.addEventListener("submit", (event) => {
   trackAdsConversion("form_submit");
 
   if (hasRealValue(config.lineUrl)) {
-    window.location.href = config.lineUrl;
+    window.location.href = lineMessageUrl();
     return;
   }
 
@@ -153,8 +192,13 @@ form?.addEventListener("submit", (event) => {
 
 roomSelect?.addEventListener("change", updateEstimate);
 volumeSelect?.addEventListener("change", updateEstimate);
+["name", "tel", "area", "type", "message"].forEach((name) => {
+  form?.elements?.[name]?.addEventListener("input", updateLineSubmitHref);
+  form?.elements?.[name]?.addEventListener("change", updateLineSubmitHref);
+});
 
 applyRuntimeConfig();
 loadTracking();
 captureCampaignParams();
+updateLineSubmitHref();
 })();
