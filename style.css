@@ -86,8 +86,9 @@ img { max-width: 100%; display: block; }
   min-height: 820px;
   color: var(--ink);
   background:
-    radial-gradient(circle at 88% 8%, rgba(199,146,45,.22), transparent 28%),
-    linear-gradient(135deg, #fffdfa 0%, #f6f1e7 45%, #e7f0eb 100%);
+    radial-gradient(circle at 86% 12%, rgba(199,146,45,.18), transparent 26%),
+    radial-gradient(circle at 12% 72%, rgba(31,111,91,.12), transparent 30%),
+    linear-gradient(135deg, #fffdfa 0%, #f7f2e8 48%, #edf5f1 100%);
 }
 .hero-media,
 .hero-shade {
@@ -108,11 +109,11 @@ img { max-width: 100%; display: block; }
 .hero-bg {
   position: absolute;
   inset: 0;
-  opacity: .18;
+  opacity: .08;
   background-image: url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2200&q=80");
   background-size: cover;
   background-position: center;
-  filter: saturate(.85);
+  filter: saturate(.75) contrast(.94);
 }
 .hero-content {
   position: relative;
@@ -155,13 +156,14 @@ img { max-width: 100%; display: block; }
   font-size: clamp(40px, 4.7vw, 62px);
   line-height: 1.12;
   letter-spacing: 0;
+  text-wrap: balance;
 }
 .lead {
   max-width: 650px;
   margin: 0;
-  color: #334449;
+  color: #2f4145;
   font-size: clamp(17px, 2vw, 21px);
-  font-weight: 600;
+  font-weight: 700;
 }
 .hero-emergency {
   display: grid;
@@ -265,21 +267,79 @@ img { max-width: 100%; display: block; }
 .trust-strip span { color: var(--muted); font-size: 13px; }
 
 .lp-photo-proof {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0;
+  position: relative;
   width: 100%;
+  overflow: hidden;
+  padding: 18px 0;
+  background:
+    linear-gradient(90deg, var(--green-dark), var(--green), var(--green-dark));
+}
+.lp-photo-proof::before,
+.lp-photo-proof::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  width: clamp(54px, 9vw, 150px);
+  pointer-events: none;
+}
+.lp-photo-proof::before {
+  left: 0;
+  background: linear-gradient(90deg, rgba(21,76,64,1), rgba(21,76,64,0));
+}
+.lp-photo-proof::after {
+  right: 0;
+  background: linear-gradient(270deg, rgba(21,76,64,1), rgba(21,76,64,0));
+}
+.photo-slider {
+  overflow: hidden;
+  width: 100%;
+}
+.photo-track {
+  display: flex;
+  width: max-content;
+  gap: 18px;
+  padding-inline: 18px;
+  animation: photoMarquee 46s linear infinite;
+  will-change: transform;
+}
+.photo-track:hover {
+  animation-play-state: paused;
+}
+.photo-track figure {
+  position: relative;
+  flex: 0 0 clamp(300px, 26vw, 430px);
+  aspect-ratio: 16 / 9;
+  margin: 0;
+  overflow: hidden;
+  border-radius: 8px;
   background: var(--green-dark);
+  box-shadow: 0 18px 40px rgba(0,0,0,.18);
 }
-.lp-photo-proof img {
+.photo-track img {
   width: 100%;
-  height: clamp(170px, 20vw, 280px);
+  height: 100%;
   object-fit: cover;
-  opacity: .92;
+  opacity: .96;
+  transform: scale(1.01);
 }
-.lp-photo-proof img:nth-child(2),
-.lp-photo-proof img:nth-child(4) {
-  transform: translateY(18px);
+.photo-track figcaption {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  max-width: calc(100% - 24px);
+  padding: 8px 12px;
+  color: #fff;
+  background: rgba(21,76,64,.86);
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 900;
+}
+@keyframes photoMarquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(-50% - 9px)); }
 }
 
 .section {
@@ -771,9 +831,13 @@ td:nth-child(2) { color: var(--green-dark); font-weight: 800; }
   .flow-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .image-lp-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .image-lp figure.wide { grid-column: span 1; }
-  .lp-photo-proof { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .lp-photo-proof img:nth-child(2),
-  .lp-photo-proof img:nth-child(4) { transform: none; }
+  .photo-track {
+    gap: 14px;
+    animation-duration: 40s;
+  }
+  .photo-track figure {
+    flex-basis: clamp(260px, 48vw, 360px);
+  }
   .reason-layout,
   .resale-layout,
   .video-appeal,
@@ -827,10 +891,17 @@ td:nth-child(2) { color: var(--green-dark); font-weight: 800; }
   .trust-strip,
   .problem-grid,
   .service-grid,
-  .lp-photo-proof,
   .image-lp-grid,
   .flow-list { grid-template-columns: 1fr; }
-  .lp-photo-proof img { height: 190px; }
+  .lp-photo-proof { padding: 12px 0; }
+  .photo-track {
+    gap: 12px;
+    padding-inline: 12px;
+    animation-duration: 34s;
+  }
+  .photo-track figure {
+    flex-basis: 280px;
+  }
   .section { padding: 64px 0; }
   .section-head h2 { font-size: 30px; }
   .cta-band { display: grid; }
