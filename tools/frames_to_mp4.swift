@@ -4,7 +4,7 @@ import Foundation
 
 let args = CommandLine.arguments
 guard args.count >= 5 else {
-    fputs("usage: frames_to_mp4.swift <framesDir> <output.mp4> <fps> <frameCount>\n", stderr)
+    fputs("usage: frames_to_mp4.swift <framesDir> <output.mp4> <fps> <frameCount> [width] [height]\n", stderr)
     exit(2)
 }
 
@@ -12,8 +12,8 @@ let framesDir = URL(fileURLWithPath: args[1], isDirectory: true)
 let outputURL = URL(fileURLWithPath: args[2])
 let fps = Int32(args[3]) ?? 30
 let frameCount = Int(args[4]) ?? 300
-let width = 720
-let height = 1280
+let width = args.count >= 6 ? (Int(args[5]) ?? 720) : 720
+let height = args.count >= 7 ? (Int(args[6]) ?? 1280) : 1280
 
 try? FileManager.default.removeItem(at: outputURL)
 
