@@ -9,6 +9,10 @@ const volumeSelect = document.querySelector("#volumeSelect");
 const estimate = document.querySelector("#estimate");
 const form = document.querySelector("#contactForm");
 const formNote = document.querySelector("#formNote");
+const cookieConsent = document.querySelector("#cookieConsent");
+const cookieAccept = document.querySelector("#cookieAccept");
+const cookieReject = document.querySelector("#cookieReject");
+let trackingLoaded = false;
 
 const placeholderValues = new Set([
   "G-XXXXXXXXXX",
@@ -57,12 +61,20 @@ function applyRuntimeConfig() {
 }
 
 function loadTracking() {
+  if (trackingLoaded) return;
   const ids = [config.ga4MeasurementId, config.googleAdsId].filter(hasRealValue);
   if (!ids.length) return;
+  trackingLoaded = true;
 
   window.dataLayer = window.dataLayer || [];
   window.gtag = function gtag(){ window.dataLayer.push(arguments); };
   window.gtag("js", new Date());
+  window.gtag("consent", "update", {
+    ad_storage: "granted",
+    ad_user_data: "granted",
+    ad_personalization: "granted",
+    analytics_storage: "granted"
+  });
   ids.forEach((id) => window.gtag("config", id));
 
   const script = document.createElement("script");
@@ -72,9 +84,40 @@ function loadTracking() {
 }
 
 function trackEvent(name, params = {}) {
+  if (!trackingLoaded) return;
   if (typeof window.gtag === "function") {
     window.gtag("event", name, params);
   }
+}
+
+function initConsentMode() {
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = window.gtag || function gtag(){ window.dataLayer.push(arguments); };
+  window.gtag("consent", "default", {
+    ad_storage: "denied",
+    ad_user_data: "denied",
+    ad_personalization: "denied",
+    analytics_storage: "denied"
+  });
+
+  const saved = localStorage.getItem("kokoro_cookie_consent");
+  if (saved === "granted") {
+    loadTracking();
+    return;
+  }
+  if (saved === "denied") return;
+  if (cookieConsent) cookieConsent.hidden = false;
+}
+
+function acceptCookies() {
+  localStorage.setItem("kokoro_cookie_consent", "granted");
+  if (cookieConsent) cookieConsent.hidden = true;
+  loadTracking();
+}
+
+function rejectCookies() {
+  localStorage.setItem("kokoro_cookie_consent", "denied");
+  if (cookieConsent) cookieConsent.hidden = true;
 }
 
 function trackAdsConversion(eventName) {
@@ -197,8 +240,11 @@ volumeSelect?.addEventListener("change", updateEstimate);
   form?.elements?.[name]?.addEventListener("change", updateLineSubmitHref);
 });
 
+initConsentMode();
+cookieAccept?.addEventListener("click", acceptCookies);
+cookieReject?.addEventListener("click", rejectCookies);
 applyRuntimeConfig();
-loadTracking();
 captureCampaignParams();
 updateLineSubmitHref();
+updateEstimate();
 })();
