@@ -2,7 +2,7 @@
 if (window.__kokoroLpScriptLoaded) return;
 window.__kokoroLpScriptLoaded = true;
 
-const config = window.LP_CONFIG || {};
+const config = window.siteConfig || window.LP_CONFIG || {};
 const lineOfficialId = "@357phpan";
 const roomSelect = document.querySelector("#roomSelect");
 const volumeSelect = document.querySelector("#volumeSelect");
@@ -23,7 +23,13 @@ const placeholderValues = new Set([
 ]);
 
 function hasRealValue(value) {
-  return Boolean(value) && !placeholderValues.has(value);
+  if (!value || placeholderValues.has(value)) return false;
+  return !/未入力|未設定|仮入力|仮住所/.test(String(value));
+}
+
+function textConfigValue(key) {
+  const value = config[key];
+  return hasRealValue(value) ? String(value).trim() : "";
 }
 
 function formatYen(value) {
@@ -38,6 +44,19 @@ function updateEstimate() {
 }
 
 function applyRuntimeConfig() {
+  document.querySelectorAll("[data-config-text]").forEach((element) => {
+    const key = element.dataset.configText;
+    const value = textConfigValue(key);
+    if (value) element.textContent = value;
+  });
+
+  document.querySelectorAll("[data-config-row]").forEach((row) => {
+    const key = row.dataset.configRow;
+    const shouldShow = Boolean(textConfigValue(key));
+    row.hidden = !shouldShow;
+    row.style.display = shouldShow ? "" : "none";
+  });
+
   if (hasRealValue(config.phoneNumber)) {
     document.querySelectorAll(".js-phone-link").forEach((link) => {
       link.href = `tel:${config.phoneNumber.replace(/[^\d+]/g, "")}`;
@@ -100,7 +119,7 @@ function initConsentMode() {
     analytics_storage: "denied"
   });
 
-  const saved = localStorage.getItem("kokoro_cookie_consent");
+  const saved = window.localStorage.getItem("kokoro_cookie_consent");
   if (saved === "granted") {
     loadTracking();
     return;
@@ -110,13 +129,13 @@ function initConsentMode() {
 }
 
 function acceptCookies() {
-  localStorage.setItem("kokoro_cookie_consent", "granted");
+  window.localStorage.setItem("kokoro_cookie_consent", "granted");
   if (cookieConsent) cookieConsent.hidden = true;
   loadTracking();
 }
 
 function rejectCookies() {
-  localStorage.setItem("kokoro_cookie_consent", "denied");
+  window.localStorage.setItem("kokoro_cookie_consent", "denied");
   if (cookieConsent) cookieConsent.hidden = true;
 }
 
@@ -175,8 +194,8 @@ function captureCampaignParams() {
   const params = new URLSearchParams(window.location.search);
   const keys = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "gclid"];
   keys.forEach((key) => {
-    const value = params.get(key) || localStorage.getItem(key) || "";
-    if (params.get(key)) localStorage.setItem(key, params.get(key));
+    const value = params.get(key) || window.localStorage.getItem(key) || "";
+    if (params.get(key)) window.localStorage.setItem(key, params.get(key));
     const field = document.querySelector(`#${key.replace(/_([a-z])/g, (_, c) => c.toUpperCase())}`);
     if (field) field.value = value;
   });

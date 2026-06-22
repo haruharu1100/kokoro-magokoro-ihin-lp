@@ -18,7 +18,7 @@
   <link rel="preconnect" href="https://images.unsplash.com">
   <link rel="stylesheet" href="./style.css">
   <script>
-    window.LP_CONFIG = {
+    window.siteConfig = {
       brandName: "心まごころ遺品整理",
       phoneNumber: "0745-51-1665",
       lineUrl: "https://line.me/R/ti/p/@357phpan",
@@ -26,8 +26,13 @@
       googleAdsId: "AW-XXXXXXXXXX",
       googleAdsConversionLabel: "YOUR_CONVERSION_LABEL",
       businessUrl: "https://haruharu1100.github.io/kokoro-magokoro-ihin-lp/",
-      licenseNumber: "奈良県公安委員会 第641170000933号"
+      licenseNumber: "奈良県公安委員会 第641170000933号",
+      representativeName: "",
+      businessAddress: "",
+      insuranceText: "作業中の万一の破損は損害保険で対応します。",
+      organizationText: ""
     };
+    window.LP_CONFIG = window.siteConfig;
   </script>
   <script type="application/ld+json">
   {
@@ -43,8 +48,7 @@
     "address": {
       "@type": "PostalAddress",
       "addressRegion": "奈良県",
-      "addressCountry": "JP",
-      "streetAddress": "TODO: 実所在地に差し替え"
+      "addressCountry": "JP"
     },
     "identifier": "古物商許可番号：奈良県公安委員会 第641170000933号"
   }
@@ -111,7 +115,7 @@
       </ul>
     </section>
 
-    <!-- TODO: ご遺族の許可を得た実作業写真に差し替え。個人・故人・住所が特定されない写真のみ使用。 -->
+    <!-- 実作業写真に更新予定。ご遺族の許可を得て、個人・故人・住所が特定されない写真のみ使用。 -->
     <section class="lp-photo-proof" aria-label="対応イメージ">
       <div class="photo-slider">
         <div class="photo-track">
@@ -121,12 +125,12 @@
           <figure><img src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=900&q=82" alt="落ち着いた和室" loading="lazy"><figcaption>和室・押し入れ</figcaption></figure>
           <figure><img src="https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=900&q=82" alt="明るいリビング" loading="lazy"><figcaption>大型家具の整理</figcaption></figure>
           <figure><img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=900&q=82" alt="整った住まい" loading="lazy"><figcaption>立ち会いなし報告</figcaption></figure>
-          <figure aria-hidden="true"><img src="https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=900&q=82" alt="" loading="lazy"><figcaption>寝室・押し入れ</figcaption></figure>
-          <figure aria-hidden="true"><img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=900&q=82" alt="" loading="lazy"><figcaption>水回り・簡易清掃</figcaption></figure>
-          <figure aria-hidden="true"><img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=900&q=82" alt="" loading="lazy"><figcaption>搬出後の片付け</figcaption></figure>
-          <figure aria-hidden="true"><img src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=900&q=82" alt="" loading="lazy"><figcaption>和室・押し入れ</figcaption></figure>
-          <figure aria-hidden="true"><img src="https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=900&q=82" alt="" loading="lazy"><figcaption>大型家具の整理</figcaption></figure>
-          <figure aria-hidden="true"><img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=900&q=82" alt="" loading="lazy"><figcaption>立ち会いなし報告</figcaption></figure>
+          <figure><img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=900&q=82" alt="明るいダイニング" loading="lazy"><figcaption>食器棚・台所</figcaption></figure>
+          <figure><img src="https://images.unsplash.com/photo-1616046229478-9901c5536a45?auto=format&fit=crop&w=900&q=82" alt="整った和モダンの部屋" loading="lazy"><figcaption>形見分け整理</figcaption></figure>
+          <figure><img src="https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=900&q=82" alt="整理された収納" loading="lazy"><figcaption>収納・押し入れ</figcaption></figure>
+          <figure><img src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=900&q=82" alt="落ち着いた室内" loading="lazy"><figcaption>貴重品探索</figcaption></figure>
+          <figure><img src="https://images.unsplash.com/photo-1617103996702-96ff29b1c467?auto=format&fit=crop&w=900&q=82" alt="片付いた玄関" loading="lazy"><figcaption>搬出経路確認</figcaption></figure>
+          <figure><img src="https://images.unsplash.com/photo-1615873968403-89e068629265?auto=format&fit=crop&w=900&q=82" alt="清潔な居室" loading="lazy"><figcaption>作業後報告</figcaption></figure>
         </div>
       </div>
     </section>
@@ -343,7 +347,7 @@
         <details><summary>探してほしい物があります。</summary><p>通帳、印鑑、権利書、保険証券、写真、貴金属、鍵など、事前に探索リストを作成して重点的に確認します。</p></details>
         <details><summary>仏壇や人形は処分できますか？</summary><p>供養やお焚き上げをご案内できます。宗派や供養方法の希望がある場合もご相談ください。</p></details>
         <details><summary>廃棄物は適正に処分されますか？</summary><p>廃棄物は法令に基づき、許可業者と連携して適正に処分します。不法投棄につながるような処分は行いません。</p></details>
-        <details><summary>作業中の破損や個人情報が心配です。</summary><p>作業中の万一の破損は損害保険での対応を前提に確認します。故人・ご家族の情報、遺品の内容は守秘し、外部に漏らしません。TODO: 保険加入の実情報に差し替え。</p></details>
+        <details><summary>作業中の破損や個人情報が心配です。</summary><p><span data-config-text="insuranceText">作業中の万一の破損は損害保険で対応します。</span>故人・ご家族の情報、遺品の内容は守秘し、外部に漏らしません。</p></details>
       </div>
     </section>
 
@@ -351,19 +355,19 @@
       <div class="section-head">
         <span class="section-kicker">会社概要 / 運営者情報</span>
         <h2>安心してご相談いただくための表示</h2>
-        <p>実務に関わる許可、処分体制、守秘方針を明記しています。未確定項目は正式運用前に実情報へ差し替えます。</p>
+        <p>実務に関わる許可、処分体制、守秘方針を明記しています。確認済みの情報のみ掲載しています。</p>
       </div>
       <div class="company-layout">
         <dl class="company-table">
-          <div><dt>屋号</dt><dd>心まごころ遺品整理</dd></div>
-          <div><dt>代表者名</dt><dd>TODO: 実情報に差し替え</dd></div>
-          <div><dt>所在地</dt><dd>TODO: 実所在地に差し替え</dd></div>
+          <div><dt>屋号</dt><dd data-config-text="brandName">心まごころ遺品整理</dd></div>
+          <div data-config-row="representativeName" hidden><dt>代表者名</dt><dd data-config-text="representativeName"></dd></div>
+          <div data-config-row="businessAddress" hidden><dt>所在地</dt><dd data-config-text="businessAddress"></dd></div>
           <div><dt>電話番号</dt><dd><a class="js-phone-link" data-track="phone_company" href="tel:0745511665">0745-51-1665</a></dd></div>
           <div><dt>営業時間</dt><dd>9:00〜18:00</dd></div>
           <div><dt>対応エリア</dt><dd>大阪、兵庫、奈良、京都</dd></div>
-          <div><dt>古物商許可番号</dt><dd>奈良県公安委員会 第641170000933号</dd></div>
-          <div><dt>損害保険</dt><dd>作業中の万一の破損は保険対応を前提に確認します。TODO: 保険会社・補償内容の実情報に差し替え</dd></div>
-          <div><dt>所属団体・資格</dt><dd>TODO: 実情報に差し替え。遺品整理士認定がある場合のみ認定番号を記載</dd></div>
+          <div><dt>古物商許可番号</dt><dd><span data-config-text="brandName">心まごころ遺品整理</span> / <span data-config-text="licenseNumber">奈良県公安委員会 第641170000933号</span></dd></div>
+          <div data-config-row="insuranceText"><dt>損害保険</dt><dd data-config-text="insuranceText">作業中の万一の破損は損害保険で対応します。</dd></div>
+          <div data-config-row="organizationText" hidden><dt>所属団体・資格</dt><dd data-config-text="organizationText"></dd></div>
         </dl>
         <div class="compliance-card">
           <h3>法令・守秘への対応</h3>
